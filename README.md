@@ -26,6 +26,32 @@ Para configurar a chave da API, siga os passos:
 6. Aguarde enquanto o programa processa e traduz as legendas.
 7. O novo arquivo de legenda traduzido será gerado na mesma pasta do arquivo original.
 
+## Exemplo de arquivo .srt traduzido do inglês para o português.
+
+```
+822
+01:32:09,300 --> 01:32:11,384
+Right.
+So...
+
+823
+01:32:11,385 --> 01:32:13,511
+- See you later.
+- See you later.
+```
+
+### Resultado:
+
+```
+Frequência - Tradução 
+
+2          -  later 
+2          -  See 
+2          -  you
+1          -  right
+1          -  so
+```
+
 ## Ferramentas Utilizadas
 1. Java: Linguagem principal utilizada no desenvolvimento.
 2. Google Translate API: Para realizar as traduções automáticas.
