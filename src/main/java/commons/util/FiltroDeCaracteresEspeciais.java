@@ -1,18 +1,23 @@
 package commons.util;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 public class FiltroDeCaracteresEspeciais {
-	public static String filter(String phrase) {
-		String charactersNotIncluded = "[\"!@ $%¨&*()_+=´`{}\\[\\]^~,.<>:;1234567890\\\\/?-]";
+    public static String filter(String word) {
+        if (word == null || word.trim().isEmpty()) {
+            return null;
+        }
 
-		Pattern pattern = Pattern.compile(charactersNotIncluded);
+        String filtered = word.replaceAll("[^\\p{L}'']", "");
 
-		Matcher matcher = pattern.matcher(phrase);
-		String filteredName = matcher.replaceAll("");
+        if (filtered.endsWith("'s") || filtered.endsWith("Â´s")) {
+            filtered = filtered.substring(0, filtered.length() - 2);
+        } else if (filtered.endsWith("'") || filtered.endsWith("Â´")) {
+            filtered = filtered.substring(0, filtered.length() - 1);
+        }
 
-		return filteredName;
+        if (filtered.isEmpty()) {
+            return null;
+        }
 
-	}
+        return filtered;
+    }
 }

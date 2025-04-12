@@ -1,4 +1,4 @@
-package model.service.imp;
+package service;
 
 import java.util.List;
 
@@ -8,7 +8,6 @@ import com.google.cloud.translate.Translate;
 import com.google.cloud.translate.Translation;
 
 import model.entities.Word;
-import model.service.TranslatorInterface;
 
 public class GoogleTranslator implements TranslatorInterface {
 

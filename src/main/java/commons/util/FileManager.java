@@ -13,45 +13,46 @@ import model.entities.Word;
 
 public class FileManager {
 
-	public static boolean retornaSeDiretorioEValido(String caminhoArquivoLegendaString) throws IOException {
-		File caminhoArquivoLegenda = new File(caminhoArquivoLegendaString);
-		File diretorio = caminhoArquivoLegenda.getParentFile();
+	public static boolean diretorioEhValido(String caminhoLegenda) {
+		File arquivoLegenda = new File(caminhoLegenda);
+		File diretorio = arquivoLegenda.getParentFile();
 
-		if (diretorio == null || !diretorio.exists() || !diretorio.isDirectory()) {
+		if (diretorio == null || !diretorio.isDirectory()) {
 			return false;
 		}
 
-		File testeArquivo = new File(diretorio, "teste.srt");
+		File arquivoTeste = new File(diretorio, "teste.srt");
 		try {
-			if (!testeArquivo.createNewFile()) {
-				return false;
-			}
-			return testeArquivo.delete();
+			return arquivoTeste.createNewFile() && arquivoTeste.delete();
 		} catch (IOException e) {
 			return false;
 		}
 	}
 
-	public static boolean verificaSeArquivoExiste(String caminhoArquivo) {
-		return new File(caminhoArquivo).exists();
+
+	public static boolean arquivoExiste(String caminhoArquivo) {
+		File arquivo = new File(caminhoArquivo);
+		return arquivo.exists();
 	}
 
-	public static void salvaArquivoTraducaoFrequencia(String caminhoArquivo, String nomeArquivo, List<Word> palavras)
-			throws IOException {
-		File diretorio = new File(caminhoArquivo);
+
+	public static void salvarArquivoComFrequencia(String caminhoDiretorio, String nomeArquivo, List<Word> palavras) throws IOException {
+		File diretorio = new File(caminhoDiretorio);
 		if (!diretorio.exists()) {
 			diretorio.mkdirs();
 		}
 
-		File arquivo = new File(diretorio, ConstantesGeral.nomeArquivoFinal + nomeArquivo);
+		String nomeCompletoArquivo = ConstantesGeral.nomeArquivoFinal + nomeArquivo;
+		File arquivo = new File(diretorio, nomeCompletoArquivo);
 
-		try (BufferedWriter bw = new BufferedWriter(new FileWriter(arquivo))) {
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(arquivo))) {
 			for (Word palavra : palavras) {
-				bw.write(palavra.toString());
-				bw.newLine();
+				writer.write(palavra.toString());
+				writer.newLine();
 			}
 		}
 	}
+
 
 	public static void processarPalavrasDoArquivoDeLegenda(List<Word> words, String caminhoArquivoLegenda)
 			throws Exception {
@@ -77,13 +78,15 @@ public class FileManager {
 		}
 	}
 
-	public static String formataNomeArquivoTraduzido(String caminhoArquivoLegendaString) {
-		File caminhoArquivoLegenda = new File(caminhoArquivoLegendaString);
-		String nomeArquivo = caminhoArquivoLegenda.getName();
+	public static String formatarNomeArquivo(String caminhoArquivoLegenda) {
+		File arquivoLegenda = new File(caminhoArquivoLegenda);
+		String nomeArquivo = arquivoLegenda.getName();
 		return Character.toUpperCase(nomeArquivo.charAt(0)) + nomeArquivo.substring(1);
 	}
 
-	public static String caminhoParaSalvarArquivoTraduzido(String caminhoArquivoLegendaString) {
-		return new File(caminhoArquivoLegendaString).getParent();
+	public static String obterCaminhoDiretorio(String caminhoArquivoLegenda) {
+		File arquivoLegenda = new File(caminhoArquivoLegenda);
+		return arquivoLegenda.getParent();
 	}
+
 }

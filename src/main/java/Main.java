@@ -1,5 +1,3 @@
-package application;
-
 import controller.SubtitleTranslateController;
 
 public class Main {

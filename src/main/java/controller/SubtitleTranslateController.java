@@ -1,88 +1,86 @@
 package controller;
 
+import GoogleAPI.GoogleTranslateConnection;
+import commons.constantes.ConstantesOpcoes;
+import commons.util.FileManager;
+import model.entities.Word;
+import service.TranslatorFactory;
+import service.TranslatorInterface;
+import views.FalhaArquivoView;
+import views.IdiomasView;
+import views.TraducaoFinalizadaView;
+
+import javax.swing.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.swing.JOptionPane;
-
-import GoogleAPI.GoogleTranslateConnection;
-import commons.constantes.ConstantesOpcoes;
-import commons.util.FileManager;
-import model.entities.Word;
-import model.service.TranslatorFactory;
-import model.service.TranslatorInterface;
-import views.FalhaArquivoView;
-import views.IdiomasView;
-import views.TraducaoFinalizadaView;
-
 public class SubtitleTranslateController {
 
-	private TranslatorInterface translator;
+    private TranslatorInterface translator;
 
-	public SubtitleTranslateController() throws Exception {
-		this.translator = TranslatorFactory.createTranslator();
-	}
+    public SubtitleTranslateController() throws Exception {
+        this.translator = TranslatorFactory.createTranslator();
+    }
 
-	public void MainProgram() throws Exception {
+    public void MainProgram() throws Exception {
 
-		try {
+        try {
 
-			List<Word> words = new ArrayList<Word>();
+            List<Word> words = new ArrayList<Word>();
 
-			String caminhoArquivoLegendaString = JOptionPane
-					.showInputDialog("Digite o caminho do arquivo da legenda: ");
+            String caminhoArquivoLegendaString = JOptionPane
+                    .showInputDialog("Digite o caminho do arquivo da legenda: ");
 
-			while (true) {
+            while (true) {
 
-				if (!FileManager.verificaSeArquivoExiste(caminhoArquivoLegendaString)
-						|| !FileManager.retornaSeDiretorioEValido(caminhoArquivoLegendaString)) {
-					int opcao = FalhaArquivoView.view();
+                if (!FileManager.arquivoExiste(caminhoArquivoLegendaString)
+                        || !FileManager.diretorioEhValido(caminhoArquivoLegendaString)) {
+                    int opcao = FalhaArquivoView.view();
 
-					if (opcao == ConstantesOpcoes.SIM) {
-						caminhoArquivoLegendaString = JOptionPane
-								.showInputDialog("Digite o caminho do arquivo da legenda: ");
+                    if (opcao == ConstantesOpcoes.SIM) {
+                        caminhoArquivoLegendaString = JOptionPane
+                                .showInputDialog("Digite o caminho do arquivo da legenda: ");
 
-					} else {
-						GoogleTranslateConnection.clearTranslateService();
-						System.exit(0);
-					}
+                    } else {
+                        GoogleTranslateConnection.clearTranslateService();
+                        System.exit(0);
+                    }
 
-				} else {
-					break;
-				}
+                } else {
+                    break;
+                }
 
-			}
+            }
 
-			String idiomaTraduzir = IdiomasView.idiomaParaTraduzir();
+            String idiomaTraduzir = IdiomasView.idiomaParaTraduzir();
 
-			JOptionPane.showMessageDialog(null,
-					"Aguarde o processamento ser finalizado. O tempo depende do tamanho do arquivo!");
+            JOptionPane.showMessageDialog(null,
+                    "Aguarde o processamento ser finalizado. O tempo depende do tamanho do arquivo!");
 
-			
-			FileManager.processarPalavrasDoArquivoDeLegenda(words, caminhoArquivoLegendaString);
-			translator.traduzListaPalavras(words, idiomaTraduzir);
-			Collections.sort(words);
 
-			
-			
-			String nomeArquivoFormatado = FileManager.formataNomeArquivoTraduzido(caminhoArquivoLegendaString);
-			String caminhoParaSalvarArquivoTraduzido = FileManager
-					.caminhoParaSalvarArquivoTraduzido(caminhoArquivoLegendaString);
-			
-			
-			FileManager.salvaArquivoTraducaoFrequencia(caminhoParaSalvarArquivoTraduzido, nomeArquivoFormatado, words);
+            FileManager.processarPalavrasDoArquivoDeLegenda(words, caminhoArquivoLegendaString);
+            translator.traduzListaPalavras(words, idiomaTraduzir);
+            Collections.sort(words);
 
-			TraducaoFinalizadaView.view(caminhoParaSalvarArquivoTraduzido, nomeArquivoFormatado);
 
-		} catch (IOException erro) {
-			JOptionPane.showMessageDialog(null, "Erro: " + erro);
-		} finally {
-			GoogleTranslateConnection.clearTranslateService();
-			System.exit(0);
-		}
+            String nomeArquivoFormatado = FileManager.formatarNomeArquivo(caminhoArquivoLegendaString);
+            String caminhoParaSalvarArquivoTraduzido = FileManager
+                    .obterCaminhoDiretorio(caminhoArquivoLegendaString);
 
-	}
+
+            FileManager.salvarArquivoComFrequencia(caminhoParaSalvarArquivoTraduzido, nomeArquivoFormatado, words);
+
+            TraducaoFinalizadaView.view(caminhoParaSalvarArquivoTraduzido, nomeArquivoFormatado);
+
+        } catch (IOException erro) {
+            JOptionPane.showMessageDialog(null, "Erro: " + erro);
+        } finally {
+            GoogleTranslateConnection.clearTranslateService();
+            System.exit(0);
+        }
+
+    }
 
 }
