@@ -54,29 +54,37 @@ public class FileManager {
 	}
 
 
-	public static void processarPalavrasDoArquivoDeLegenda(List<Word> words, String caminhoArquivoLegenda)
-			throws Exception {
-		try (BufferedReader br = new BufferedReader(new FileReader(caminhoArquivoLegenda))) {
-			String linhaDoArquivo;
-			while ((linhaDoArquivo = br.readLine()) != null) {
-				if (!linhaDoArquivo.contains(" --> ") && !linhaDoArquivo.isEmpty()) {
-					String[] linha = linhaDoArquivo.split(" ");
-					for (String palavra : linha) {
-						String palavraFiltrada = FiltroDeCaracteresEspeciais.filter(palavra.toLowerCase());
-						if (!palavraFiltrada.isEmpty()) {
-							Word palavraObj = new Word(palavraFiltrada);
-							int index = words.indexOf(palavraObj);
-							if (index >= 0) {
-								words.get(index).adicionaFrequencia();
-							} else {
-								words.add(palavraObj);
-							}
-						}
-					}
+	public static void processarPalavrasDoArquivoDeLegenda(List<Word> words, String caminhoArquivoLegenda) throws Exception {
+		try (BufferedReader leitor = new BufferedReader(new FileReader(caminhoArquivoLegenda))) {
+			String linha;
+			while ((linha = leitor.readLine()) != null) {
+				if (linha.trim().isEmpty() || linha.contains(" --> ")) {
+					continue;
 				}
+
+				processarLinha(linha, words);
 			}
 		}
 	}
+
+	private static void processarLinha(String linha, List<Word> words) {
+		String[] palavras = linha.split(" ");
+		for (String palavra : palavras) {
+			String palavraFiltrada = FiltroDeCaracteresEspeciais.filter(palavra.toLowerCase());
+			if (palavraFiltrada.isEmpty()) {
+				continue;
+			}
+
+			Word novaPalavra = new Word(palavraFiltrada);
+			int indice = words.indexOf(novaPalavra);
+			if (indice >= 0) {
+				words.get(indice).adicionaFrequencia();
+			} else {
+				words.add(novaPalavra);
+			}
+		}
+	}
+
 
 	public static String formatarNomeArquivo(String caminhoArquivoLegenda) {
 		File arquivoLegenda = new File(caminhoArquivoLegenda);
