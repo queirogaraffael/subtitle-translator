@@ -2,12 +2,11 @@ package service;
 
 import java.util.List;
 
-import javax.swing.JOptionPane;
-
 import com.google.cloud.translate.Translate;
 import com.google.cloud.translate.Translation;
 
 import model.entities.Word;
+import views.MensagemUtils;
 
 public class GoogleTranslator implements TranslatorInterface {
 
@@ -31,7 +30,7 @@ public class GoogleTranslator implements TranslatorInterface {
 			try {
 				p.setWordTranslated(tradutorPalavra(p.getWord(), idiomaTraduzir));
 			} catch (Exception e) {
-				JOptionPane.showMessageDialog(null, "Erro: " + e);
+				MensagemUtils.mostrarErro(e.toString());
 			}
 		});
 
