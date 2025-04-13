@@ -15,11 +15,11 @@ Conta no Google Cloud: Para utilizar este projeto, você precisa ter uma conta n
 
 Para configurar a chave da API, siga os passos:
 1. Crie sua chave de API no Google Cloud, ativando a API do Google Translate.
-2. Adicione a chave ao atributo apiKey da classe GoogleTranslateConnection.
+2. Adicione a chave ao atributo `apiKey` da classe `GoogleTranslateConnection`.
 
 ## Como Usar
 1. Clone este repositório para o seu ambiente local.
-2. Configure sua chave de API do Google Translate na classe GoogleTranslateConnection.
+2. Configure sua chave de API do Google Translate na classe `GoogleTranslateConnection`.
 3. Execute o programa principal.
 4. Selecione o arquivo de legenda que deseja traduzir. O programa identificará automaticamente o idioma do arquivo.
 5. Escolha o idioma para o qual deseja traduzir (inglês, português ou alemão).
@@ -57,7 +57,8 @@ Frequência - Tradução
 2. Google Translate API: Para realizar as traduções automáticas.
 3. Biblioteca para Leitura de Arquivos SRT: Ferramenta para manipulação dos arquivos de legenda .srt.
 4. Maven: Gerenciador de dependências e build automation.
-
+5. **Regex (Expressões Regulares)**: Utilizado para extrair e filtrar palavras relevantes dos arquivos de legenda.
+6. **JUnit**: Utilizado para a criação de testes unitários que garantem a confiabilidade das funcionalidades principais do sistema.
 
 ## Contribuição
 Contribuições são bem-vindas! Se você deseja contribuir com melhorias, sinta-se à vontade para abrir uma issue ou enviar um pull request.
